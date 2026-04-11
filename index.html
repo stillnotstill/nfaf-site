@@ -1287,6 +1287,44 @@
             }
         }
 
+
+        /* Video Modal */
+        .video-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .video-modal-overlay.active {
+            display: flex;
+        }
+        .video-modal {
+            width: 90%;
+            max-width: 960px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+        }
+        .video-modal iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: rgba(255,255,255,0.6);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -1428,7 +1466,7 @@
             <h1 class="section-title">Selected <em>Positions</em></h1>
             <div class="section-rule"></div>
             <p class="section-intro">
-                Selected positions from our portfolio. Each one a thesis on how this industry should communicate. Some shipped, some conceptual, all produced with the conviction that crypto deserves better creative than it usually gets.
+                Selected work. Shipped projects, live campaigns, and concepts in development. Every piece built to reach the people crypto hasn't talked to yet.
             </p>
             <div class="portfolio-grid">
 
@@ -1479,7 +1517,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-type">Content Production</div>
-                        <div class="card-title"><span style="font-size: 1.15em;">0</span>VIX/Keom Protocol</div>
+                        <div class="card-title"><span style="font-size: 1.3em; font-weight: 500; font-family: monospace;">0</span>VIX/Keom Protocol</div>
                         <div class="card-desc">
                             Polygon's native money market. The first DeFi protocol on zkEVM. We turned dense lending mechanics into something a normal person could watch without glazing over. DeFi education that respects both the protocol and the audience.
                         </div>
@@ -1492,7 +1530,7 @@
                 </div>
 
                 <!-- 4. Fatties NFT -->
-                <div class="portfolio-card">
+                <div class="portfolio-card" onclick="openVideoModal('m4f65WRJpnM')" style="cursor:pointer;">
                     <div class="card-visual">
                         <img src="images/fatties-banner.jpeg" alt="Fatties NFT" loading="lazy">
                     </div>
@@ -2025,6 +2063,23 @@
                 fetchAllPrices();
             }
         }, 20000);
+
+        function openVideoModal(videoId) {
+            document.getElementById('videoModalIframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+            document.getElementById('videoModal').classList.add('active');
+        }
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.remove('active');
+            document.getElementById('videoModalIframe').src = '';
+        }
     </script>
+
+    <!-- Video Modal -->
+    <div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal()">
+        <div class="video-modal" onclick="event.stopPropagation()">
+            <button class="video-modal-close" onclick="closeVideoModal()">CLOSE</button>
+            <iframe id="videoModalIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
 </body>
 </html>
