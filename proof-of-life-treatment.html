@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proof of Life — Show Treatment</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #0d2035;
+  --navy-deep: #0a1828;
+  --gold: #c9a227;
+  --white: #ffffff;
+  --white-soft: rgba(255,255,255,0.7);
+  --white-muted: rgba(255,255,255,0.35);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono: 'Space Mono', monospace;
+}
+
+body {
+  background: var(--navy-deep);
+  color: var(--white);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 60px;
+  position: relative;
+}
+
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #0a1520 0%, #112030 25%, #162e42 50%, #0f2235 75%, #0a1828 100%);
+  z-index: 0;
+}
+
+.slide-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  width: 100%;
+}
+
+.cover { text-align: center; }
+
+.cover-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--white-muted);
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(48px, 8vw, 100px);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.cover-title em { font-style: italic; color: var(--gold); }
+
+.cover-rule {
+  width: 240px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.5), transparent);
+  margin: 35px auto;
+}
+
+.cover-sub {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--white-soft);
+  letter-spacing: 5px;
+}
+
+.cover-est {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--white-muted);
+  letter-spacing: 5px;
+  margin-top: 50px;
+}
+
+.section-number {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--gold);
+  letter-spacing: 5px;
+  margin-bottom: 24px;
+  opacity: 0.8;
+}
+
+.section-heading {
+  font-family: var(--serif);
+  font-size: clamp(30px, 4.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 30px;
+}
+
+.section-heading em { font-style: italic; color: var(--gold); }
+
+.section-rule {
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 35px;
+}
+
+.section-body {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--white-soft);
+  max-width: 680px;
+}
+
+.section-body p + p { margin-top: 1.3em; }
+.section-body strong { color: var(--white); font-weight: 400; }
+
+.quote-block {
+  border-left: 2px solid var(--gold);
+  padding-left: 30px;
+  margin: 50px 0;
+}
+
+.quote-block p {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--white);
+}
+
+.slide-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 10%, rgba(201, 162, 39, 0.15) 50%, transparent 90%);
+}
+
+.format-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 45px 0;
+}
+
+.format-card {
+  background: rgba(201, 162, 39, 0.03);
+  border: 1px solid rgba(201, 162, 39, 0.1);
+  padding: 28px;
+}
+
+.format-card h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.format-card p {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--white-soft);
+  line-height: 1.65;
+}
+
+.sig-questions {
+  list-style: none;
+  margin: 35px 0;
+}
+
+.sig-questions li {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--white-soft);
+  line-height: 1.5;
+  padding: 14px 0 14px 24px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.08);
+  position: relative;
+}
+
+.sig-questions li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 23px;
+  width: 5px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.deck-footer {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 50px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .slide { padding: 60px 28px; }
+  .format-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="slide">
+  <div class="slide-content cover">
+    <div class="cover-label">NFA STUDIOS / SHOW TREATMENT</div>
+    <h1 class="cover-title">Proof of<br><em>Life</em></h1>
+    <div class="cover-rule"></div>
+    <div class="cover-sub">A life well lived.</div>
+    <div class="cover-est">CREATED BY JOSHUA PETERS / NFA STUDIOS LLC / 2026</div>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content">
+    <div class="section-number">01 / LOGLINE</div>
+    <h2 class="section-heading">Inside the homes crypto <em>actually built</em>.</h2>
+    <div class="section-rule"></div>
+    <div class="section-body">
+      <p>Proof of Life takes viewers inside the homes of people who built real wealth through crypto and web3. Part home tour, part origin story, the show explores how early adopters, traders, builders, and investors transformed digital bets into tangible, beautiful lives.</p>
+      <p>Each episode features a different success story, showcasing their property while unpacking the decisions, risks, and lucky breaks that got them there.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content">
+    <div class="section-number">02 / THE THESIS</div>
+    <h2 class="section-heading">Crypto has a <em>public relations</em> problem.</h2>
+    <div class="section-rule"></div>
+    <div class="section-body">
+      <p>The word itself has become cultural shorthand for grifters, rug pulls, and cringe. In surveys of dating red flags, simply listing "crypto" as an interest ranks alongside the worst personality traits a person can have.</p>
+      <p><strong>Proof of Life is designed to be the antidote.</strong> It doesn't look like a crypto show. It doesn't feel like a crypto show. It feels like a premium home tour series where the guests happen to have built their wealth through cryptocurrency.</p>
+      <p>The show is a warm, open door for mainstream audiences to walk through, look around, and encounter crypto people who are actually cool, self-aware, and have a sense of humor about themselves.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content">
+    <div class="section-number">03 / WHY THE NAME</div>
+    <h2 class="section-heading">Proof of <em>work</em>. Proof of <em>stake</em>.<br>Proof of <em>life</em>.</h2>
+    <div class="section-rule"></div>
+    <div class="section-body">
+      <p>For the crypto-native audience, it's an immediate nod to the foundational consensus mechanisms of blockchain. It signals that this is content made by people who actually understand the space.</p>
+      <p>For a mainstream audience, it reads as something entirely different: <strong>proof that these people have built real, tangible lives.</strong></p>
+      <p>The name also future-proofs the brand. While Season One focuses on crypto success stories, the format can eventually encompass tech founders, startup exits, athletes, creators, and anyone who built wealth in an unconventional way.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content">
+    <div class="section-number">04 / FORMAT</div>
+    <h2 class="section-heading">Content your family would<br>actually <em>sit through</em>.</h2>
+    <div class="section-rule"></div>
+    <div class="section-body">
+      <p>Each episode runs 20 to 35 minutes. The tone lives at the intersection of three proven formats: the calm authenticity of <strong>Enes Yilmazer</strong>, the playful energy of <strong>Caleb Simpson</strong>, and the cinematic production quality of <strong>Architectural Digest's Open Door</strong>.</p>
+      <p>The homes should feel lived in, not staged. The guest's dog is running around during the shoot. Nice billiard room? Show us your trick shot. Great bar? We're doing a pour of something nice.</p>
+    </div>
+    <div class="format-grid">
+      <div class="format-card">
+        <h4>Production</h4>
+        <p>Two-camera Sony FX6 setup. DJI Mavic 3 drone. Gimbal stabilizer. LED portable kit. Shot at the highest available resolution for a clean, premium look.</p>
+      </div>
+      <div class="format-card">
+        <h4>Distribution</h4>
+        <p>YouTube primary, optimized for smart TVs. Each episode generates secondary content for Shorts, Reels, and TikTok. Biweekly release schedule.</p>
+      </div>
+      <div class="format-card">
+        <h4>Season One</h4>
+        <p>8 episodes. California-based to minimize travel costs. Target launch Q3 2026. Designed to scale internationally by Season Two.</p>
+      </div>
+      <div class="format-card">
+        <h4>Streaming Ready</h4>
+        <p>All episodes produced with clean versions for licensing to Netflix, Amazon, or YouTube Premium without renegotiation of sponsor agreements.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content">
+    <div class="section-number">05 / SIGNATURE QUESTIONS</div>
+    <h2 class="section-heading">The moments people <em>remember</em>.</h2>
+    <div class="section-rule"></div>
+    <div class="section-body">
+      <p>Each episode includes custom questions tailored to the guest and a set of recurring signature questions that become part of the show's identity.</p>
+    </div>
+    <ul class="sig-questions">
+      <li>"What was the stupidest thing you spent money on?"</li>
+      <li>"What was the first thing you bought when you really felt like you could reward yourself?"</li>
+      <li>"What's the most money you've lost in a single day, and what did you do that night?"</li>
+      <li>"If crypto disappeared tomorrow, could you keep this house?"</li>
+      <li>"What do your non-crypto friends think about all this?"</li>
+    </ul>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content">
+    <div class="section-number">06 / THE HOST</div>
+    <h2 class="section-heading">Crypto fluency meets<br><em>comedic instinct</em>.</h2>
+    <div class="section-rule"></div>
+    <div class="section-body">
+      <p>Josh serves as both the showrunner and on-camera host. Active in crypto since 2013, he can engage with guests on DeFi protocols, market cycles, Bitcoin philosophy, and NFT culture without a cheat sheet.</p>
+      <p>He also brings a comedy background, years of on-camera experience as an actor in Los Angeles, and a natural comfort hosting live events. The combination of crypto depth, comedic instincts, and genuine appreciation for real estate and lifestyle is exceptionally rare.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide-divider"></div>
+
+<div class="slide">
+  <div class="slide-content cover">
+    <div class="cover-label">NFA STUDIOS</div>
+    <h2 class="section-heading" style="text-align:center;">The show crypto <em>deserves</em>.<br>The content everyone else<br><em>will actually watch</em>.</h2>
+    <div class="cover-rule"></div>
+    <p style="font-family:var(--serif);font-size:20px;font-style:italic;font-weight:300;color:var(--white-soft);text-align:center;letter-spacing:1px;">A life well lived.</p>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="mailto:joshuamatthewpeters@me.com" style="color:var(--gold);text-decoration:none;font-family:var(--mono);font-size:12px;letter-spacing:3px;border-bottom:1px solid rgba(201,162,39,0.3);padding-bottom:4px;">joshuamatthewpeters@me.com</a>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--white-muted);letter-spacing:5px;margin-top:35px;text-align:center;">LOS ANGELES</div>
+  </div>
+</div>
+
+<div class="deck-footer">
+  &copy; MMXXVI NFA STUDIOS LLC / CONFIDENTIAL / ALL INTELLECTUAL PROPERTY OWNED EXCLUSIVELY BY NFA STUDIOS LLC
+</div>
+
+</body>
+</html>
