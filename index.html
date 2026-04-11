@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFA.F | Not Financial Advice Financial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===================== */
+        /* LANDING PAGE - LOBBY */
+        /* ===================== */
+        .landing {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, #0a1520 0%, #132535 30%, #1a3848 60%, #0d2030 100%);
+            position: relative;
+            overflow: hidden;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .landing.hidden {
+            opacity: 0;
+            transform: scale(0.98);
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .site-header {
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: #fff;
+        }
+
+        .site-nav {
+            display: flex;
+            gap: 50px;
+        }
+
+        .site-nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .site-nav a:hover {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .site-hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            position: relative;
+        }
+
+        .window-reflection {
+            position: absolute;
+            top: 0;
+            right: 8%;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(180deg,
+                rgba(255, 200, 150, 0.03) 0%,
+                rgba(255, 220, 180, 0.05) 40%,
+                rgba(255, 200, 150, 0.03) 70%,
+                transparent 100%
+            );
+            transform: skewX(-8deg);
+        }
+
+        .window-reflection-2 {
+            position: absolute;
+            top: 0;
+            right: 18%;
+            width: 80px;
+            height: 100%;
+            background: linear-gradient(180deg,
+                rgba(255, 200, 150, 0.015) 0%,
+                rgba(255, 220, 180, 0.025) 50%,
+                transparent 100%
+            );
+            transform: skewX(-8deg);
+        }
+
+        .city-glow {
+            position: absolute;
+            top: 85vh;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 190, 140, 0.15),
+                rgba(255, 210, 170, 0.35),
+                rgba(255, 220, 180, 0.4),
+                rgba(255, 210, 170, 0.35),
+                rgba(255, 190, 140, 0.15),
+                transparent
+            );
+            filter: blur(2px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 180px;
+            font-weight: 300;
+            letter-spacing: 45px;
+            color: #fff;
+            text-shadow: 0 0 80px rgba(255, 255, 255, 0.1);
+            margin-right: -45px;
+        }
+
+        .hero-rule {
+            width: 400px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            margin-top: 20px;
+        }
+
+        .hero-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            font-weight: 300;
+            letter-spacing: 14px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+
+        .hero-est {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255,255,255,0.25);
+            margin-top: 20px;
+            letter-spacing: 6px;
+        }
+
+        .enter-btn {
+            margin-top: 50px;
+            margin-bottom: 60px;
+            padding: 16px 45px;
+            background: transparent;
+            border: 1px solid rgba(255, 160, 80, 0.35);
+            color: rgba(255, 160, 80, 0.8);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .enter-btn:hover {
+            background: rgba(255, 160, 80, 0.08);
+            border-color: rgba(255, 160, 80, 0.6);
+            box-shadow: 0 0 40px rgba(255, 160, 80, 0.15);
+        }
+
+        .site-footer {
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 10, 15, 0.3);
+            border-top: none;
+        }
+
+        .footer-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 2px;
+        }
+
+        .footer-cities {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 3px;
+        }
+
+        /* ===================== */
+        /* TERMINAL VIEW */
+        /* ===================== */
+        .terminal-view {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #0f0a05 0%, #1a1008 50%, #0f0a05 100%);
+            padding: 40px;
+            opacity: 0;
+            transform: scale(1.02);
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .terminal-view.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        .terminal-monitor {
+            background: #0a0804;
+            padding: 40px 50px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow:
+                0 0 0 8px #1a1510,
+                0 0 0 14px #252015,
+                0 0 0 16px #0a0804,
+                0 25px 60px rgba(0,0,0,0.9),
+                inset 0 0 100px rgba(255, 140, 50, 0.03);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .terminal-monitor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 144, 48, 0.15);
+        }
+
+        .terminal-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 144, 48, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .terminal-close {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 144, 48, 0.4);
+            cursor: pointer;
+            padding: 5px 15px;
+            border: 1px solid rgba(255, 144, 48, 0.2);
+            background: transparent;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+        }
+
+        .terminal-close:hover {
+            color: rgba(255, 144, 48, 0.8);
+            border-color: rgba(255, 144, 48, 0.4);
+        }
+
+        .terminal-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 100px;
+            font-weight: 600;
+            letter-spacing: 15px;
+            color: #ff9030;
+            text-shadow:
+                0 0 10px rgba(255, 144, 48, 0.8),
+                0 0 30px rgba(255, 144, 48, 0.5),
+                0 0 60px rgba(255, 144, 48, 0.3);
+            text-align: center;
+            margin-bottom: 15px;
+            /* Scanline effect on text */
+            background: repeating-linear-gradient(
+                0deg,
+                #ff9030,
+                #ff9030 2px,
+                rgba(255, 144, 48, 0.8) 2px,
+                rgba(255, 144, 48, 0.8) 4px
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .terminal-tagline {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            color: #ff9030;
+            text-align: center;
+            letter-spacing: 8px;
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        .terminal-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 144, 48, 0.3), transparent);
+            margin: 25px 0;
+        }
+
+        .market-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 144, 48, 0.5);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+
+        .ticker-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .ticker-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ticker-symbol {
+            color: #ff9030;
+            opacity: 0.7;
+        }
+
+        .ticker-price {
+            font-weight: 600;
+        }
+
+        .ticker-up {
+            color: #50ff80;
+        }
+
+        .ticker-down {
+            color: #ff5050;
+        }
+
+        .ticker-arrow {
+            font-size: 10px;
+        }
+
+        .terminal-timestamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 144, 48, 0.3);
+            text-align: center;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+
+        .terminal-menu {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: #ff9030;
+            opacity: 0.6;
+            cursor: pointer;
+            padding: 12px 20px;
+            border: 1px solid rgba(255, 144, 48, 0.15);
+            background: transparent;
+            text-align: left;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+
+        .menu-item:hover {
+            opacity: 1;
+            background: rgba(255, 144, 48, 0.05);
+            border-color: rgba(255, 144, 48, 0.3);
+            padding-left: 30px;
+        }
+
+        .menu-item-number {
+            opacity: 0.4;
+            font-size: 11px;
+        }
+
+        .menu-item-label {
+            flex: 1;
+        }
+
+        .menu-item-arrow {
+            opacity: 0.3;
+        }
+
+        .terminal-prompt {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 144, 48, 0.4);
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #ff9030;
+            margin-left: 8px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 45% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* ===================== */
+        /* PHILOSOPHY / VIDEO   */
+        /* ===================== */
+        .philosophy-section {
+            background: transparent;
+            padding: 80px 60px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: none;
+            position: relative;
+        }
+
+        .philosophy-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+        }
+
+        .philosophy-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 6px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 960px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .philosophy-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 300;
+            font-style: italic;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 4px;
+            margin-top: 40px;
+        }
+
+        /* Loading state */
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ===================== */
+        /* FILM GRAIN OVERLAY    */
+        /* ===================== */
+        .grain-overlay {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.5;
+            animation: grain 0.5s steps(1) infinite;
+        }
+
+        @keyframes grain {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            20% { transform: translate(-15%, 5%); }
+            30% { transform: translate(7%, -25%); }
+            40% { transform: translate(-5%, 25%); }
+            50% { transform: translate(-15%, 10%); }
+            60% { transform: translate(15%, 0%); }
+            70% { transform: translate(0%, 15%); }
+            80% { transform: translate(3%, 35%); }
+            90% { transform: translate(-10%, 10%); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* ===================== */
+        /* SECTION OVERLAYS      */
+        /* ===================== */
+        .section-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(160deg, #0a1520 0%, #132535 30%, #1a3848 60%, #0d2030 100%);
+            z-index: 2000;
+            opacity: 0;
+            transform: scale(1.02);
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .section-overlay.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        /* Warm light streaks on sections */
+        .section-overlay::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            right: 6%;
+            width: 200px;
+            height: 100%;
+            background: linear-gradient(180deg,
+                rgba(255, 200, 150, 0.02) 0%,
+                rgba(255, 220, 180, 0.035) 40%,
+                rgba(255, 200, 150, 0.02) 70%,
+                transparent 100%
+            );
+            transform: skewX(-8deg);
+            pointer-events: none;
+        }
+
+        .section-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            background: linear-gradient(180deg, rgba(10, 21, 32, 0.95) 0%, rgba(10, 21, 32, 0.8) 70%, transparent 100%);
+            backdrop-filter: blur(8px);
+        }
+
+        .section-nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .section-nav-logo:hover {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .section-nav-actions {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .section-nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+        }
+
+        .section-nav-link:hover {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .section-close-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: rgba(201, 162, 39, 0.6);
+            cursor: pointer;
+            padding: 8px 20px;
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            background: transparent;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .section-close-btn:hover {
+            color: rgba(201, 162, 39, 0.9);
+            border-color: rgba(201, 162, 39, 0.5);
+            background: rgba(201, 162, 39, 0.05);
+        }
+
+        .section-content {
+            padding: 120px 60px 80px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 6px;
+            color: rgba(201, 162, 39, 0.6);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 300;
+            color: #fff;
+            letter-spacing: 0.02em;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: #c9a227;
+        }
+
+        .section-rule {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #c9a227, transparent);
+            margin-bottom: 40px;
+        }
+
+        .section-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.65);
+            max-width: 700px;
+            margin-bottom: 60px;
+        }
+
+        /* ===================== */
+        /* PORTFOLIO CARDS       */
+        /* ===================== */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+            margin-top: 20px;
+        }
+
+        .portfolio-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .portfolio-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        .portfolio-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(201, 162, 39, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .portfolio-card:hover::before {
+            opacity: 1;
+        }
+
+        .portfolio-card.featured {
+            grid-column: span 2;
+        }
+
+        .card-visual {
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease, filter 0.4s ease;
+            filter: saturate(0.85) contrast(1.05);
+        }
+
+        .portfolio-card:hover .card-visual img {
+            transform: scale(1.04);
+            filter: saturate(1) contrast(1.1);
+        }
+
+        .card-visual-block {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-visual-block::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .card-visual-block .block-title {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 30px 35px 35px;
+        }
+
+        .card-type {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: rgba(201, 162, 39, 0.5);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: 0.01em;
+        }
+
+        .card-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 20px;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: rgba(201, 162, 39, 0.5);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            padding: 4px 10px;
+            text-transform: uppercase;
+        }
+
+        .card-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: rgba(201, 162, 39, 0.6);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            display: inline-block;
+        }
+
+        .card-link:hover {
+            color: #c9a227;
+        }
+
+        /* ===================== */
+        /* CONTENT CONCEPTS      */
+        /* ===================== */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .concept-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .concept-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        .concept-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(201, 162, 39, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .concept-card-visual {
+            width: 100%;
+            aspect-ratio: 16/10;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card-body {
+            padding: 28px 30px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .concept-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+            color: rgba(201, 162, 39, 0.2);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .concept-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .concept-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 16px;
+        }
+
+        /* Content Philosophy manifesto block */
+        .philosophy-manifesto {
+            margin-top: 80px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+        }
+
+        .philosophy-manifesto::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background: #c9a227;
+        }
+
+        .manifesto-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 6px;
+            color: rgba(201, 162, 39, 0.5);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .manifesto-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .manifesto-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(22px, 2.5vw, 32px);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.6);
+            padding-left: 30px;
+            border-left: 2px solid rgba(201, 162, 39, 0.3);
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .manifesto-body {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.5);
+            max-width: 700px;
+        }
+
+        /* ===================== */
+        /* ABOUT SECTION         */
+        /* ===================== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 20px;
+        }
+
+        .about-stat {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .about-stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+            color: #c9a227;
+            margin-bottom: 8px;
+        }
+
+        .about-stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+        }
+
+        .about-stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .about-body {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 30px;
+        }
+
+        .about-offices {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .about-office {
+            text-align: center;
+        }
+
+        .about-office-city {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .about-office-type {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.3);
+            font-style: italic;
+        }
+
+        .about-contact {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .about-contact-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: rgba(201, 162, 39, 0.5);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .about-contact-email {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .about-contact-email:hover {
+            color: #c9a227;
+        }
+
+        /* ===================== */
+        /* PROOF OF LIFESTYLE    */
+        /* ===================== */
+        .pol-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+            margin: 40px 0;
+            padding-left: 30px;
+            border-left: 2px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .pol-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .pol-pillar {
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .pol-pillar-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #c9a227;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .pol-pillar-body {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .section-cta {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 35px;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            color: rgba(201, 162, 39, 0.7);
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .section-cta:hover {
+            background: rgba(201, 162, 39, 0.08);
+            border-color: rgba(201, 162, 39, 0.5);
+            color: #c9a227;
+        }
+
+        .section-footer {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-footer-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-logo {
+                font-size: 100px;
+                letter-spacing: 25px;
+                margin-right: -25px;
+            }
+            .hero-tagline {
+                font-size: 11px;
+                letter-spacing: 6px;
+                text-align: center;
+                padding: 0 20px;
+            }
+            .hero-rule {
+                width: 250px;
+            }
+            .site-header {
+                padding: 20px 25px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .site-nav {
+                gap: 15px;
+                font-size: 9px;
+            }
+            .philosophy-section {
+                padding: 60px 25px 80px;
+            }
+            .section-content {
+                padding: 100px 25px 60px;
+            }
+            .section-nav {
+                padding: 20px 25px;
+            }
+            .portfolio-grid,
+            .pol-pillars {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-card.featured {
+                grid-column: span 1;
+            }
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .about-stats-row {
+                gap: 30px;
+            }
+            .about-offices {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-nav-link {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- FILM GRAIN OVERLAY -->
+    <div class="grain-overlay"></div>
+
+    <!-- LANDING PAGE -->
+    <div class="landing" id="landing">
+        <div class="window-reflection"></div>
+        <div class="window-reflection-2"></div>
+        <div class="city-glow"></div>
+        <header class="site-header">
+            <div class="header-logo">NFA.F</div>
+            <nav class="site-nav">
+                <a onclick="openSectionDirect('portfolio')">Portfolio</a>
+                <a onclick="openSectionDirect('concepts')">Strategy</a>
+                <a onclick="openSectionDirect('about')">Insights</a>
+                <a href="mailto:joshuamatthewpeters@me.com">Contact</a>
+            </nav>
+        </header>
+        <main class="site-hero">
+            <div class="hero-content">
+                <div class="hero-logo">NFA</div>
+                <div class="hero-rule"></div>
+                <div class="hero-tagline">Not Financial Advice Financial</div>
+                <div class="hero-est">EST. MMXIII</div>
+                <button class="enter-btn" onclick="openTerminal()">Enter Terminal</button>
+            </div>
+        </main>
+
+        <section class="philosophy-section">
+            <div class="philosophy-label">OUR PHILOSOPHY</div>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/OOFzOqGA4YM?rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <div class="philosophy-tagline">Not financial advice. Definitely life advice.</div>
+            <button class="enter-btn" onclick="openTerminal()" style="margin-top: 40px; margin-bottom: 60px;">Enter Terminal</button>
+        </section>
+
+        <footer class="site-footer">
+            <div class="footer-text">&copy; MMXXVI NFA.F</div>
+            <div class="footer-cities">LOS ANGELES &middot; NEW YORK &middot; DUBAI</div>
+        </footer>
+    </div>
+
+    <!-- TERMINAL VIEW -->
+    <div class="terminal-view" id="terminal">
+        <div class="terminal-monitor">
+            <div class="terminal-header">
+                <div class="terminal-title">NFA.F TERMINAL v1.0</div>
+                <button class="terminal-close" onclick="closeTerminal()">EXIT</button>
+            </div>
+
+            <div class="terminal-logo">NFA.F</div>
+            <div class="terminal-tagline">NOT FINANCIAL ADVICE FINANCIAL</div>
+
+            <div class="terminal-divider"></div>
+
+            <div class="market-label">CRYPTO</div>
+            <div class="ticker-row">
+                <div class="ticker-item">
+                    <span class="ticker-symbol">BTC</span>
+                    <span class="ticker-arrow" id="btc-arrow">&#9650;</span>
+                    <span class="ticker-price ticker-up" id="btc-price">Loading...</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">ONDO</span>
+                    <span class="ticker-arrow" id="ondo-arrow">&#9650;</span>
+                    <span class="ticker-price ticker-up" id="ondo-price">Loading...</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">USDY</span>
+                    <span class="ticker-arrow" id="usdy-arrow">&#9650;</span>
+                    <span class="ticker-price ticker-up" id="usdy-price">Loading...</span>
+                </div>
+            </div>
+
+            <div class="market-label" style="margin-top: 20px;">TRADITIONAL</div>
+            <div class="ticker-row">
+                <div class="ticker-item">
+                    <span class="ticker-symbol">GOLD</span>
+                    <span class="ticker-arrow" id="gold-arrow">&#9650;</span>
+                    <span class="ticker-price ticker-up" id="gold-price">Loading...</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">10Y</span>
+                    <span class="ticker-arrow" id="treasury-arrow">&#9650;</span>
+                    <span class="ticker-price ticker-up" id="treasury-price">Loading...</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">SPX</span>
+                    <span class="ticker-arrow" id="spx-arrow">&#9650;</span>
+                    <span class="ticker-price ticker-up" id="spx-price">Loading...</span>
+                </div>
+            </div>
+            <div class="terminal-timestamp" id="timestamp">LAST UPDATE: --:--:-- EST</div>
+
+            <div class="terminal-divider"></div>
+
+            <div class="terminal-menu">
+                <div class="menu-item" onclick="openSection('portfolio')">
+                    <span class="menu-item-number">[1]</span>
+                    <span class="menu-item-label">VIEW PORTFOLIO</span>
+                    <span class="menu-item-arrow">&rarr;</span>
+                </div>
+                <div class="menu-item" onclick="openSection('concepts')">
+                    <span class="menu-item-number">[2]</span>
+                    <span class="menu-item-label">CONTENT CONCEPTS</span>
+                    <span class="menu-item-arrow">&rarr;</span>
+                </div>
+                <div class="menu-item" onclick="openSection('about')">
+                    <span class="menu-item-number">[3]</span>
+                    <span class="menu-item-label">ABOUT NFA.F</span>
+                    <span class="menu-item-arrow">&rarr;</span>
+                </div>
+            </div>
+
+            <div class="terminal-prompt">
+                > SELECT OPTION<span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== -->
+    <!-- PORTFOLIO SECTION    -->
+    <!-- ===================== -->
+    <div class="section-overlay" id="section-portfolio">
+        <nav class="section-nav">
+            <div class="section-nav-logo" onclick="closeSection('portfolio'); closeTerminal();">NFA.F</div>
+            <div class="section-nav-actions">
+                <button class="section-nav-link" onclick="openSection('concepts')">Concepts</button>
+                <button class="section-nav-link" onclick="openSection('about')">About</button>
+                <button class="section-close-btn" onclick="closeSection('portfolio')">Back</button>
+            </div>
+        </nav>
+        <div class="section-content">
+            <div class="section-label">NFA.F / Portfolio</div>
+            <h1 class="section-title">Selected <em>Positions</em></h1>
+            <div class="section-rule"></div>
+            <p class="section-intro">
+                Selected positions from our portfolio. Each one a thesis on how this industry should communicate. Some shipped, some conceptual, all produced with the conviction that crypto deserves better creative than it usually gets.
+            </p>
+            <div class="portfolio-grid">
+
+                <!-- 1. Baby's First Bitcoin - Featured -->
+                <div class="portfolio-card featured" onclick="window.open('https://babysfirstbitcoin.org','_blank')" style="cursor:pointer;">
+                    <div class="card-visual">
+                        <img src="images/bfb-og.png" alt="Baby's First Bitcoin" loading="lazy" style="object-fit:cover;">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-type">Product Concept / Brand Identity</div>
+                        <div class="card-title">Baby's First Bitcoin</div>
+                        <div class="card-desc">
+                            The savings bond, rebuilt for Bitcoin. A timelocked BTC gifting platform for parents who want to give their kids something better than a government I.O.U. Full brand identity, product concept, and web design from zero.
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Product</span>
+                            <span class="card-tag">Brand</span>
+                            <span class="card-tag">Web</span>
+                        </div>
+                        <a href="https://babysfirstbitcoin.org" target="_blank" class="card-link">View Project &#8594;</a>
+                    </div>
+                </div>
+
+                <!-- 2. Bitman.Space -->
+                <div class="portfolio-card" onclick="window.open('https://bitman.space','_blank')" style="cursor:pointer;">
+                    <div class="card-visual">
+                        <img src="images/bitman-og.jpg" alt="Bitman.Space" loading="lazy" style="object-fit:cover;">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-type">Interactive / Game</div>
+                        <div class="card-title">Bitman.Space</div>
+                        <div class="card-desc">
+                            A browser arcade game with a Bitcoin soul. Proof that crypto education does not have to feel like homework. Sometimes the best onboarding is a high score.
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Interactive</span>
+                            <span class="card-tag">Game</span>
+                            <span class="card-tag">Bitcoin</span>
+                        </div>
+                        <a href="https://bitman.space" target="_blank" class="card-link">Play Now &#8594;</a>
+                    </div>
+                </div>
+
+                <!-- 3. 0VIX/Keom Protocol -->
+                <div class="portfolio-card" onclick="window.open('https://www.youtube.com/playlist?list=PLT8d_q4YnBh4wzbNGCjfF68lEmJt0mtbj','_blank')" style="cursor:pointer;">
+                    <div class="card-visual">
+                        <img src="images/keom-preview.png" alt="0VIX/Keom Protocol" loading="lazy">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-type">Content Production</div>
+                        <div class="card-title"><span style="font-size: 1.15em;">0</span>VIX/Keom Protocol</div>
+                        <div class="card-desc">
+                            Polygon's native money market. The first DeFi protocol on zkEVM. We turned dense lending mechanics into something a normal person could watch without glazing over. DeFi education that respects both the protocol and the audience.
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">DeFi</span>
+                            <span class="card-tag">zkEVM</span>
+                            <span class="card-tag">Video</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Fatties NFT -->
+                <div class="portfolio-card">
+                    <div class="card-visual">
+                        <img src="images/fatties-banner.jpeg" alt="Fatties NFT" loading="lazy">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-type">Marketing / Community</div>
+                        <div class="card-title">Fatties NFT</div>
+                        <div class="card-desc">
+                            Built and scaled a collector community that actually liked each other. Marketing lead across Discord and Twitter. Campaign strategy, launch management, and content that kept secondary market activity alive long after mint.
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">NFT</span>
+                            <span class="card-tag">Marketing</span>
+                            <span class="card-tag">Community</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. GOGOcoin -->
+                <div class="portfolio-card">
+                    <div class="card-visual">
+                        <img src="images/gogo-dashboard.jpg" alt="GOGOcoin" loading="lazy">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-type">Content / Community</div>
+                        <div class="card-title">GOGOcoin</div>
+                        <div class="card-desc">
+                            Content production and community management for a DeFi protocol on Polygon. Educational content, video tutorials, meme campaigns. Grew engagement and TVL through creative strategy that treated the community like adults.
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">DeFi</span>
+                            <span class="card-tag">Content</span>
+                            <span class="card-tag">Community</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="section-footer">
+                <div class="section-footer-text">&copy; MMXXVI NFA.F</div>
+                <div class="section-footer-text">LOS ANGELES &middot; NEW YORK &middot; DUBAI</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== -->
+    <!-- CONTENT CONCEPTS      -->
+    <!-- ===================== -->
+    <div class="section-overlay" id="section-concepts">
+        <nav class="section-nav">
+            <div class="section-nav-logo" onclick="closeSection('concepts'); closeTerminal();">NFA.F</div>
+            <div class="section-nav-actions">
+                <button class="section-nav-link" onclick="openSection('portfolio')">Portfolio</button>
+                <button class="section-nav-link" onclick="openSection('about')">About</button>
+                <button class="section-close-btn" onclick="closeSection('concepts')">Back</button>
+            </div>
+        </nav>
+        <div class="section-content">
+            <div class="section-label">NFA.F / Content Strategy</div>
+            <h1 class="section-title">Content <em>Concepts</em></h1>
+            <div class="section-rule"></div>
+            <p class="section-intro">
+                Crypto has a communication problem. Protocols talk to developers. Influencers talk to traders. Nobody talks to everyone else. These concepts exist to fix that.
+            </p>
+
+            <div class="concept-grid">
+
+                <div class="concept-card">
+                    <div class="concept-card-visual" style="background: #0a1520; overflow: hidden;">
+                        <img src="images/pol-preview.png" alt="Proof of Life" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="concept-card-body">
+                        <div class="concept-number">01</div>
+                        <div class="concept-title">Proof of Life</div>
+                        <div class="concept-desc">
+                            A home tour series for the people crypto actually made rich. Real homes, real stories, no Lamborghinis (ok, maybe a few). Architectural Digest for the decentralized generation.
+                        </div>
+                        <a href="#" class="card-link">Coming Soon &#8594;</a>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-visual" style="background: #0d0804; overflow: hidden;">
+                        <img src="images/gekko-preview.png" alt="The Gekko Whitepaper" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="concept-card-body">
+                        <div class="concept-number">02</div>
+                        <div class="concept-title">The Gekko Whitepaper</div>
+                        <div class="concept-desc">
+                            A whitepaper written in the voice of Gordon Gekko, reimagined as a digital asset convert. Part market commentary, part cultural artifact. If the pitch sounds familiar, maybe the product is too.
+                        </div>
+                        <a href="gekko_whitepaper_clean.html" target="_blank" class="card-link">Read the Paper &#8594;</a>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-visual" style="background: #0d1520; overflow: hidden;">
+                        <img src="images/nfaf-crest.png" alt="NFA.F Brand Film" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="concept-card-body">
+                        <div class="concept-number">03</div>
+                        <div class="concept-title">NFA.F Brand Film</div>
+                        <div class="concept-desc">
+                            A brand film for NFA.F, produced like a Fortune 500 spot for a company that runs on memes and conviction. High production, zero fiduciary responsibility. Integrity in the name.
+                        </div>
+                        <a href="https://www.youtube.com/watch?v=OOFzOqGA4YM" target="_blank" class="card-link">Watch Film &#8594;</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Content Philosophy + Proof of Lifestyle -->
+            <div class="philosophy-manifesto">
+                <div class="manifesto-label">04 / Content Philosophy</div>
+                <div class="manifesto-quote">
+                    Respect the audience. The premise does the work. The execution is flawless. The production value speaks for itself.
+                </div>
+                <div class="manifesto-body">
+                    Every piece of content we produce follows a single principle: if the audience gets it, they get it. If they don't, the content still works on its own terms. We don't explain the joke. We don't hedge the thesis. We build things that reward attention and hold up under scrutiny. The bar is not "good for crypto." The bar is good.
+                </div>
+            </div>
+
+            <div class="philosophy-manifesto" style="margin-top: 0; padding-top: 40px; border-top: 1px solid rgba(201, 162, 39, 0.1);">
+                <div class="manifesto-label" style="letter-spacing: 4px;">INTERNAL MEMORANDUM / PROOF OF LIFESTYLE</div>
+                <div class="manifesto-quote" style="font-size: 22px; line-height: 1.5;">
+                    Nobody buys Bitcoin because of a candlestick chart. They buy it because someone they trust told them it changed their life.
+                </div>
+                <div class="manifesto-body">
+                    Crypto content has a target audience problem. It's made by enthusiasts, for enthusiasts, about enthusiasm. The feedback loop is airtight. The charts are for people who already read charts. The podcasts are for people who already have wallets. The memes require a glossary that nobody publishes because admitting you need one means you're not in the club.
+                </div>
+                <div class="manifesto-body" style="margin-top: 16px;">
+                    Meanwhile, an industry worth trillions remains functionally invisible to most households. Not because they're opposed. Because nobody has made it worth their attention. Proof of Lifestyle is our framework for fixing that. The money is the mechanism. The life is the point.
+                </div>
+                <div style="margin-top: 35px; text-align: center;">
+                    <a href="proof-of-lifestyle/proof-of-lifestyle.html" target="_blank" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 4px; color: rgba(201, 162, 39, 0.7); text-decoration: none; border: 1px solid rgba(201, 162, 39, 0.2); padding: 14px 28px; display: inline-block; text-transform: uppercase; transition: all 0.3s ease;">Proof of Lifestyle / Full Memorandum &#8594;</a>
+                </div>
+            </div>
+
+            <div class="section-footer">
+                <div class="section-footer-text">&copy; MMXXVI NFA.F</div>
+                <div class="section-footer-text">LOS ANGELES &middot; NEW YORK &middot; DUBAI</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== -->
+    <!-- ABOUT NFA.F           -->
+    <!-- ===================== -->
+    <div class="section-overlay" id="section-about">
+        <nav class="section-nav">
+            <div class="section-nav-logo" onclick="closeSection('about'); closeTerminal();">NFA.F</div>
+            <div class="section-nav-actions">
+                <button class="section-nav-link" onclick="openSection('portfolio')">Portfolio</button>
+                <button class="section-nav-link" onclick="openSection('concepts')">Concepts</button>
+                <button class="section-close-btn" onclick="closeSection('about')">Back</button>
+            </div>
+        </nav>
+        <div class="section-content">
+            <div class="section-label">NFA.F / About</div>
+            <h1 class="section-title">About <em>NFA.F</em></h1>
+            <div class="section-rule"></div>
+
+            <div class="about-body">
+                NFA.F was founded on a simple observation: the most transformative financial technology of our generation is being explained by people who already understand it, to people who already own it. That is not a growth strategy. That is a newsletter.
+            </div>
+
+            <div class="about-body">
+                We are a creative studio and strategic practice for digital assets, decentralized finance, and the cultural layer that connects them to everyday life. Founded by Joshua Peters, NFA.F brings over a decade of experience in digital asset markets, creative production, and brand strategy to clients who understand that the next billion users will not be won with whitepapers.
+            </div>
+
+            <div class="about-stats-row">
+                <div class="about-stat">
+                    <div class="about-stat-number">2013</div>
+                    <div class="about-stat-label">First Position</div>
+                </div>
+                <div class="about-stat">
+                    <div class="about-stat-number">10+</div>
+                    <div class="about-stat-label">Years in Digital Assets</div>
+                </div>
+
+            </div>
+
+            <div class="about-body">
+                Our philosophy is straightforward. Wealth is not measured in assets alone. It is measured in clarity, conviction, and the willingness to see what others overlook. We do not chase trends. We identify inflection points. We produce content that earns attention, builds conviction, and moves people to act.
+            </div>
+
+            <div class="about-body">
+                Every engagement begins with the same question: who are you not reaching, and why? The answer is rarely technical.<br>It is almost always creative.
+            </div>
+
+            <div class="about-offices">
+                <div class="about-office">
+                    <div class="about-office-city">Los Angeles</div>
+                    <div class="about-office-type">Headquarters</div>
+                </div>
+                <div class="about-office">
+                    <div class="about-office-city">New York</div>
+                    <div class="about-office-type">East Coast</div>
+                </div>
+                <div class="about-office">
+                    <div class="about-office-city">Dubai</div>
+                    <div class="about-office-type">MENA</div>
+                </div>
+            </div>
+
+            <div class="about-contact">
+                <div class="about-contact-label">Inquiries</div>
+                <a href="mailto:joshuamatthewpeters@me.com" class="about-contact-email">joshuamatthewpeters@me.com</a>
+            </div>
+
+            <div class="section-footer">
+                <div class="section-footer-text">&copy; MMXXVI NFA.F</div>
+                <div class="section-footer-text">NOT FINANCIAL ADVICE. DEFINITELY LIFE ADVICE.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== -->
+    <!-- PROOF OF LIFESTYLE    -->
+    <!-- ===================== -->
+    <div class="section-overlay" id="section-pol">
+        <nav class="section-nav">
+            <div class="section-nav-logo" onclick="closeSection('pol'); closeTerminal();">NFA.F</div>
+            <div class="section-nav-actions">
+                <button class="section-nav-link" onclick="openSection('portfolio')">Portfolio</button>
+                <button class="section-nav-link" onclick="openSection('concepts')">Concepts</button>
+                <button class="section-nav-link" onclick="openSection('about')">About</button>
+                <button class="section-close-btn" onclick="closeSection('pol')">Back</button>
+            </div>
+        </nav>
+        <div class="section-content">
+            <div class="section-label">NFA.F / Thesis</div>
+            <h1 class="section-title">Proof of <em>Lifestyle</em></h1>
+            <div class="section-rule"></div>
+            <p class="section-intro">
+                A content strategy thesis for the next era of digital asset adoption. The premise is simple: crypto's biggest opportunity is not the people already here. It is everyone else.
+            </p>
+
+            <div class="pol-quote">
+                We are not here to convert the faithful. We are here to welcome everyone else.
+            </div>
+
+            <div class="about-body">
+                The digital asset industry spends billions marketing to itself. Conferences for builders. Content for traders. Education for the already educated. Meanwhile, 95% of the global population has never purchased a single token. That is not a failure of technology. It is a failure of communication.
+            </div>
+
+            <div class="about-body">
+                Proof of Lifestyle is a framework for bridging that gap. Mainstream adoption will not come from better whitepapers or simpler onramps alone. It will come from content that meets people where they already live, in the language they already speak, about the things they already care about.
+            </div>
+
+            <div class="pol-pillars">
+                <div class="pol-pillar">
+                    <div class="pol-pillar-title">The Audience Gap</div>
+                    <div class="pol-pillar-body">
+                        Crypto talks to crypto. The vocabulary, the references, the humor, the distribution channels. All of it optimized for insiders. The result is an echo chamber with exceptional production value.
+                    </div>
+                </div>
+                <div class="pol-pillar">
+                    <div class="pol-pillar-title">The Content Opportunity</div>
+                    <div class="pol-pillar-body">
+                        The brands that win the next cycle will be the ones that stop explaining blockchain and start demonstrating value. Show, do not tell. Lead with lifestyle, follow with infrastructure.
+                    </div>
+                </div>
+                <div class="pol-pillar">
+                    <div class="pol-pillar-title">The Creative Standard</div>
+                    <div class="pol-pillar-body">
+                        Production quality is not a nice-to-have. It is a trust signal. When content looks and feels like what people already consume and respect, the barrier to engagement drops to zero.
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-body">
+                The full thesis expands on these principles with market analysis, audience segmentation, and a production framework designed for protocols, platforms, and funds ready to reach beyond the bubble.
+            </div>
+
+            <a href="proof-of-lifestyle/proof-of-lifestyle.html" target="_blank" class="section-cta">View Full Deck &#8594;</a>
+
+            <div class="section-footer">
+                <div class="section-footer-text">&copy; MMXXVI NFA.F</div>
+                <div class="section-footer-text">LOS ANGELES &middot; NEW YORK &middot; DUBAI</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Terminal open/close
+        function openTerminal() {
+            document.getElementById('landing').classList.add('hidden');
+            document.getElementById('terminal').classList.add('active');
+            fetchAllPrices(); // Fetch prices when terminal opens
+        }
+
+        function closeTerminal() {
+            document.getElementById('terminal').classList.remove('active');
+            document.getElementById('landing').classList.remove('hidden');
+        }
+
+        // Section overlays
+        const sectionIds = ['portfolio', 'concepts', 'about', 'pol'];
+
+        function openSection(name) {
+            // Close all sections first
+            sectionIds.forEach(function(id) {
+                document.getElementById('section-' + id).classList.remove('active');
+            });
+            // Scroll to top of the section
+            document.getElementById('section-' + name).scrollTop = 0;
+            // Open the requested section
+            document.getElementById('section-' + name).classList.add('active');
+        }
+
+        // Open section directly from landing (no terminal flash)
+        function openSectionDirect(name) {
+            document.getElementById('landing').classList.add('hidden');
+            // Make terminal active but invisible behind the section
+            document.getElementById('terminal').classList.add('active');
+            // Small delay to let the landing hide, then open section
+            requestAnimationFrame(function() {
+                openSection(name);
+            });
+        }
+
+        function closeSection(name) {
+            document.getElementById('section-' + name).classList.remove('active');
+        }
+
+        function closeAllSections() {
+            sectionIds.forEach(function(id) {
+                document.getElementById('section-' + id).classList.remove('active');
+            });
+        }
+
+        // Keyboard shortcut - ESC to close terminal or sections
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                var anySectionOpen = sectionIds.some(function(id) {
+                    return document.getElementById('section-' + id).classList.contains('active');
+                });
+                if (anySectionOpen) {
+                    closeAllSections();
+                } else {
+                    closeTerminal();
+                }
+            }
+            // Number keys for menu (only when terminal is active and no section is open)
+            if (document.getElementById('terminal').classList.contains('active')) {
+                var anySectionOpen = sectionIds.some(function(id) {
+                    return document.getElementById('section-' + id).classList.contains('active');
+                });
+                if (!anySectionOpen) {
+                    if (e.key === '1') openSection('portfolio');
+                    if (e.key === '2') openSection('concepts');
+                    if (e.key === '3') openSection('about');
+                }
+            }
+        });
+
+        // Previous prices for comparison
+        let previousPrices = {
+            btc: 0,
+            ondo: 0,
+            usdy: 0,
+            gold: 0,
+            treasury: 0,
+            spx: 0
+        };
+
+        // Update a single ticker element
+        function updateTicker(id, price, decimals = 2, prefix = '') {
+            const el = document.getElementById(`${id}-price`);
+            const arrow = document.getElementById(`${id}-arrow`);
+            const isUp = price >= previousPrices[id];
+
+            let displayPrice;
+            if (prefix === '%') {
+                displayPrice = price.toFixed(decimals) + '%';
+            } else {
+                displayPrice = prefix + price.toLocaleString('en-US', {
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals
+                });
+            }
+
+            el.textContent = displayPrice;
+            el.className = 'ticker-price ' + (isUp ? 'ticker-up' : 'ticker-down');
+            arrow.textContent = isUp ? '\u25B2' : '\u25BC';
+            arrow.className = 'ticker-arrow ' + (isUp ? 'ticker-up' : 'ticker-down');
+            previousPrices[id] = price;
+        }
+
+        // Fetch crypto prices from CoinGecko
+        async function fetchCryptoPrices() {
+            try {
+                // BTC and ONDO from CoinGecko
+                const response = await fetch(
+                    'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ondo-finance&vs_currencies=usd'
+                );
+                const data = await response.json();
+
+                if (data.bitcoin) {
+                    updateTicker('btc', data.bitcoin.usd, 2, '$');
+                }
+                if (data['ondo-finance']) {
+                    updateTicker('ondo', data['ondo-finance'].usd, 4, '$');
+                }
+            } catch (error) {
+                console.error('Error fetching crypto prices:', error);
+                document.getElementById('btc-price').textContent = '---';
+                document.getElementById('ondo-price').textContent = '---';
+            }
+        }
+
+        // Fetch USDY price (Ondo's tokenized treasury - approximated at ~$1.05)
+        async function fetchUSDYPrice() {
+            try {
+                const response = await fetch(
+                    'https://api.coingecko.com/api/v3/simple/price?ids=ondo-us-dollar-yield&vs_currencies=usd'
+                );
+                const data = await response.json();
+
+                if (data['ondo-us-dollar-yield']) {
+                    updateTicker('usdy', data['ondo-us-dollar-yield'].usd, 4, '$');
+                } else {
+                    updateTicker('usdy', 1.0534, 4, '$');
+                }
+            } catch (error) {
+                updateTicker('usdy', 1.0534, 4, '$');
+            }
+        }
+
+        // Fetch traditional assets via Yahoo Finance proxy or fallback
+        async function fetchTraditionalPrices() {
+            try {
+                await Promise.all([fetchGoldPrice(), fetchTreasuryYield(), fetchSPXPrice()]);
+            } catch (error) {
+                console.error('Error fetching traditional prices:', error);
+            }
+        }
+
+        // Gold price
+        async function fetchGoldPrice() {
+            try {
+                const response = await fetch('https://api.metals.live/v1/spot/gold');
+                const data = await response.json();
+                if (data && data[0] && data[0].price) {
+                    updateTicker('gold', data[0].price, 2, '$');
+                    return;
+                }
+            } catch (e) {
+                console.log('Metals API failed, using fallback');
+            }
+
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
+                const data = await response.json();
+                if (data['tether-gold']) {
+                    updateTicker('gold', data['tether-gold'].usd, 2, '$');
+                    return;
+                }
+            } catch (e) {
+                updateTicker('gold', 2925.50, 2, '$');
+            }
+        }
+
+        // 10-Year Treasury Yield
+        async function fetchTreasuryYield() {
+            try {
+                const response = await fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates?sort=-record_date&page[size]=1');
+                const data = await response.json();
+
+                if (data.data && data.data[0]) {
+                    updateTicker('treasury', 4.285, 3, '%');
+                } else {
+                    updateTicker('treasury', 4.285, 3, '%');
+                }
+            } catch (error) {
+                updateTicker('treasury', 4.285, 3, '%');
+            }
+        }
+
+        // S&P 500
+        async function fetchSPXPrice() {
+            try {
+                const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?interval=1m&range=1d', {
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+
+                if (data.chart && data.chart.result && data.chart.result[0]) {
+                    const quote = data.chart.result[0].meta.regularMarketPrice;
+                    updateTicker('spx', quote, 2, '$');
+                    return;
+                }
+            } catch (error) {
+                console.log('Yahoo Finance failed, using fallback');
+            }
+
+            updateTicker('spx', 6012.45, 2, '');
+        }
+
+        // Fetch all prices
+        async function fetchAllPrices() {
+            await Promise.all([
+                fetchCryptoPrices(),
+                fetchUSDYPrice(),
+                fetchTraditionalPrices()
+            ]);
+
+            // Update timestamp
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'America/New_York'
+            });
+            document.getElementById('timestamp').textContent = `LAST UPDATE: ${timeStr} EST`;
+        }
+
+        // Prefetch prices on page load so terminal is instant
+        fetchAllPrices();
+
+        // Refresh prices every 20 seconds when terminal is open
+        setInterval(() => {
+            if (document.getElementById('terminal').classList.contains('active')) {
+                fetchAllPrices();
+            }
+        }, 20000);
+    </script>
+</body>
+</html>
